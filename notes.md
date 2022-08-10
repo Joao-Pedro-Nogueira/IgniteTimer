@@ -210,3 +210,23 @@ export const defaultTheme = {
   white: '#fff'
 }
 ```
+
+# Tipagem de temas (parte 03)
+
+Os temas já podem ser criados na pasta themes, mas ainda não estão tipados propriamente.
+
+## Extensão 'd.ts'
+
+Dentro do aruqivo vai existir apenas comandos específicos de typescript, não pode ter JS, muito menos HTML.
+
+```ts
+import 'styled-components'
+import { defaultTheme } from '../styles/themes/default'
+
+type ThemeType = typeof defaultTheme
+
+// Com este comando, todas as vezes que o 'styled-components' for importando, a tipagem do tema já estará definida
+declare module 'styled-components' {
+  export interface DefaultTheme extends ThemeType {}
+}
+```
