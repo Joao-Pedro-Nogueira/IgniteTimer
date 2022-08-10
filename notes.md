@@ -133,7 +133,7 @@ export const ButtonContainer = styled.button<ButtonContainerProps>`
 `
 ```
 
-# Gestão de temas com styled-components (parte 02)
+## Gestão de temas com styled-components (parte 1.2)
 
 Podemos definir inúmeros temas e esses temas são controlados por JS/TS
 
@@ -211,7 +211,7 @@ export const defaultTheme = {
 }
 ```
 
-# Tipagem de temas (parte 03)
+## Tipagem de temas (parte 1.3)
 
 Os temas já podem ser criados na pasta themes, mas ainda não estão tipados propriamente.
 
@@ -229,4 +229,43 @@ type ThemeType = typeof defaultTheme
 declare module 'styled-components' {
   export interface DefaultTheme extends ThemeType {}
 }
+```
+
+# Configurando ESLint (Parte 2)
+
+Ecma Script Linting.
+LInting = processo que valida se o código está seguindo padrões de escrita estipulados previamente. Por exemplo, usar ponto e vírgula, aspas simples ou duplas. Muito utilizado quando há uma equipe grande trabalhando no mesmo código (onde cada um tem seus hábitos de escrita, mas o código final precisa ser padronizado).
+
+Instalação:
+
+```bash
+npm i eslint -D
+```
+
+Configuração criada pelo tima da Rocketseat:
+
+```bash
+npm i @rocketseat/eslint-config -D
+```
+
+Para criar uma configuração personalizada:
+
+```bash
+npx eslint --init
+```
+
+Serão feitas várias perguntas via terminal
+
+Para utilizar:
+
+```bash
+npx eslint src --ext .ts,.tsx
+```
+
+node, eslint, nome da pasta, --ext (extensions), extensões dos arquivos que queremos verificar.
+
+Para corrigir todos os erros:
+
+```bash
+npx eslint src --ext .ts,.tsx --fix
 ```
