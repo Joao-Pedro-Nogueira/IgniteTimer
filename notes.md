@@ -269,3 +269,113 @@ Para corrigir todos os erros:
 ```bash
 npx eslint src --ext .ts,.tsx --fix
 ```
+
+# Rotas no ReactJS (parte 3)
+
+## React Router DOM (3.1)
+
+Utilizado para definir as páginas ao digitar nos links. Ex: www.site.com/store/products
+
+```bash
+npm i react-router-dom
+```
+
+```tsx
+// App
+
+import { Router } from './Router'
+import { BrowserRouter } from 'react-router-dom'
+
+export function App() {
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      <BrowserRouter>
+        <Router />
+      </BrowserRouter>
+      <GLobalStyle />
+    </ThemeProvider>
+  )
+}
+```
+
+```tsx
+// Router
+
+import { Routes, Route } from 'react-router-dom'
+import { History } from './pages/History'
+import { Home } from './pages/Home'
+
+export function Router() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/history" element={<History />} />
+    </Routes>
+  )
+}
+```
+
+Rotas para os componentes Home e History (que estão dentro do diretório pages)
+
+## Layout de rotas (3.2)
+
+Nesta aplicação, o Header é igual em todas as páginas, portanto, não faz sentido colocar o elemento Header dentro de cada página para ser recarregado o tempo todo, sendo que ele já está carregado em tela antes de mudar/ recarregar a página.
+
+```tsx
+// Router.tsx
+import { Routes, Route } from 'react-router-dom'
+import { History } from './pages/History'
+import { Home } from './pages/Home'
+import { DefaultLayout } from './pages/layouts/DefaultLayout'
+
+export function Router() {
+  return (
+    <Routes>
+      <Route path="/" element={<DefaultLayout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/history" element={<History />} />
+      </Route>
+    </Routes>
+  )
+}
+```
+
+```tsx
+// App
+
+import { ThemeProvider } from 'styled-components'
+import { Router } from './Router'
+import { BrowserRouter } from 'react-router-dom'
+
+import { GLobalStyle } from './styles/global'
+import { defaultTheme } from './styles/themes/default'
+
+export function App() {
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      <BrowserRouter>
+        <Router />
+      </BrowserRouter>
+      <GLobalStyle />
+    </ThemeProvider>
+  )
+}
+```
+
+```tsx
+// DefaultLayout.tsx
+
+import { Outlet } from 'react-router-dom'
+import { Header } from '../../components/Header'
+
+export function DefaultLayout() {
+  return (
+    <div>
+      <Header />
+      <Outlet />
+      {/* Este é o elemento que recebe o conteúdo variável */}
+    </div>
+  )
+}
+```
