@@ -379,3 +379,32 @@ export function DefaultLayout() {
   )
 }
 ```
+
+# Controlled vs Uncontrolled (parte 04)
+
+## Controled
+
+Manter, em tempo real, a informação que o usuário insere na nossa aplicação dentro do estado, dentro de uma variável no componente.
+Então toda vez que o usuário escrever ou atualizar algo no input, a informação no estado será atualizada, contendo o novo valor, para ter o valor sempre atualizado.
+
+```tsx
+import { useState } from 'react'
+
+export function Form() {
+  const [task, setTask] = useState('')
+
+  return (
+    <textarea
+      onChange={setTask(event.target.value)}
+      value={task}
+    />
+    <button type="submit" disabled={task === ''}>Enviar</button>
+  )
+}
+```
+
+## Uncontroled
+
+A informação sobre o valor do input será buscada apenas quando ela for necessária.
+
+# React Hook Form (parte 5)
