@@ -407,4 +407,6 @@ export function Form() {
 
 A informação sobre o valor do input será buscada apenas quando ela for necessária.
 
-# React Hook Form (parte 5)
+# Iniciando ciclo (parte 05)
+
+Para iniciar um ciclo, é preciso um State.
