@@ -120,9 +120,6 @@ export function Home() {
       setActiveCycleId(null)
     }
 
-    console.log(cycles)
-
-
     const minutesAmount = Math.floor(currentSeconds / 60)
     const secondsAmount = currentSeconds % 60
 
