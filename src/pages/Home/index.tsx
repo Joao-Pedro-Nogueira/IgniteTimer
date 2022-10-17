@@ -17,7 +17,7 @@ import {
 
 const newCycleFormValidationSchema = zod.object({
   task: zod.string().min(1, 'Informe a tarefa'),
-  minutesAmount: zod.number().min(5).max(60)
+  minutesAmount: zod.number().min(1).max(60)
 })
 
 interface Cycle {
@@ -26,6 +26,7 @@ interface Cycle {
   minutesAmount: number,
   startDate: Date,
   interruptedDate?: Date,
+  finishedDate?: Date
 }
 
 export function Home() {
@@ -44,19 +45,30 @@ export function Home() {
   
   const activeCycle = cycles.find(cycle => cycle.id === activeCycleId)
 
+  const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
+  const currentSeconds = activeCycle ? totalSeconds - secondsPassed : 0
+
+
   useEffect(() => {
     var interval: number
 
     if(activeCycle) {
       interval = setInterval(() => {
-        setSecondsPassed(differenceInSeconds(new Date(), activeCycle.startDate))
+        const currentDiference = differenceInSeconds(new Date(), activeCycle.startDate)
+
+        setSecondsPassed(currentDiference)
+
+        if (currentDiference>=totalSeconds) {
+          finishCycle()
+        }
+
       }, 1000)
     }
 
     return () => {
       clearInterval(interval)
     }
-  }, [activeCycle])
+  }, [activeCycle, totalSeconds])
     
     type newCycleFormData = zod.infer<typeof newCycleFormValidationSchema>
     
@@ -78,7 +90,6 @@ export function Home() {
     }
 
     function handleInterruptCycle() {
-
       setCycles(
         cycles.map(
           cycle => {
@@ -94,9 +105,23 @@ export function Home() {
       setActiveCycleId(null)
     }
 
+    function finishCycle() {
+      setCycles(
+        cycles.map(
+          cycle => {
+            if (cycle.id == activeCycleId) {
+              return {...cycle, finishedDate: new Date()}
+            } else {
+              return cycle
+            }
+          }
+        )
+      ),
+      setActiveCycleId(null)
+    }
 
-    const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
-    const currentSeconds = activeCycle ? totalSeconds - secondsPassed : 0
+    console.log(cycles)
+
 
     const minutesAmount = Math.floor(currentSeconds / 60)
     const secondsAmount = currentSeconds % 60
@@ -126,17 +151,17 @@ export function Home() {
             />
 
           <datalist id="task-suggestions">
-            <option value="Leitura" />
-            <option value="Estudar NodeJS" />
-            <option value="Fazer front-end do projeto" />
+            <option value="Treinar" />
+            <option value="Trabalhar" />
+            <option value="Assistir Fórmula 1" />
           </datalist>
 
           <label htmlFor="minutesAmount">durante</label>
           <MinutesAmountInput
             id="minutesAmount"
-            min={5}
+            min={1}
             max={60}
-            step={5}
+            step={1}
             type="number"
             placeholder="00"
             disabled={!!activeCycle}
