@@ -40,29 +40,40 @@ export function CyclesContextProvider({ children }: CycleContextProviderProps) {
   
   const [cyclesState, dispatch] = useReducer((state: CyclesState, action: any) => {
 
-    if (action.type === 'ADD_NEW_CYCLE') {
-      return {
-        ...state, 
-        cycles: [...state.cycles, action.payload.newCycle],
-        activeCycleId: action.payload.newCycle.id
-      }
+    switch (action.type) {
+      case 'ADD_NEW_CYCLE':
+        return {
+          ...state, 
+          cycles: [...state.cycles, action.payload.newCycle],
+          activeCycleId: action.payload.newCycle.id
+        }
+      case 'INTERRUPT_CURRENT_CYCLE':
+        return {
+          ...state,
+          cycles: state.cycles.map((cycle)=> {
+            if (cycle.id == state.activeCycleId) {
+              return {...cycle, interruptedDate: new Date()}
+            } else {
+              return cycle
+            }
+          }),
+          activeCycleId: null
+        }
+      case 'FINISH_CYCLE':
+        return {
+          ...state,
+          cycles: state.cycles.map((cycle)=> {
+            if (cycle.id == state.activeCycleId) {
+              return {...cycle, finshedDate: new Date()}
+            } else {
+              return cycle
+            }
+          }),
+          activeCycleId: null
+        }
+      default:
+        return state 
     }
-
-    if (action.type === 'INTERRUPT_CURRENT_CYCLE') {
-      return {
-        ...state,
-        cycles: state.cycles.map((cycle)=> {
-          if (cycle.id == state.activeCycleId) {
-            return {...cycle, interruptedDate: new Date()}
-          } else {
-            return cycle
-          }
-        }),
-        activeCycleId: null
-      }
-    }
-
-    return state
   }, {
     cycles: [],
     activeCycleId: null
@@ -89,9 +100,7 @@ export function CyclesContextProvider({ children }: CycleContextProviderProps) {
         newCycle
       }
     })
-    // setCycles((state) => [...state, newCycle])
     setSecondsPassed(0)
-    // reset()
   }
 
   function updateSecondsPassed(currentDiference: number) {
@@ -112,22 +121,10 @@ export function CyclesContextProvider({ children }: CycleContextProviderProps) {
     dispatch({
       type: 'FINISH_CYCLE',
       payload:{
-        data: activeCycleId
+        activeCycleId
       }
     })
 
-    // setCycles(
-    //   cycles.map(
-    //     cycle => {
-    //       if (cycle.id == activeCycleId) {
-    //         return {...cycle, finishedDate: new Date()}
-    //       } else {
-    //         return cycle
-    //       }
-    //     }
-    //   )
-    // ),
-    // setActiveCycleId(null)
   }
 
   return(
