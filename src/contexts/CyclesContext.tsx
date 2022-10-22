@@ -29,7 +29,9 @@ interface CycleContextProviderProps {
 
 export function CyclesContextProvider({ children }: CycleContextProviderProps) {
   
-  const [cyclesState, dispatch] = useReducer(CyclesReducer, {
+  const [cyclesState, dispatch] = useReducer(
+    CyclesReducer, 
+    {
     cycles: [],
     activeCycleId: null
   }, () => {
@@ -37,6 +39,11 @@ export function CyclesContextProvider({ children }: CycleContextProviderProps) {
 
     if (!!storageStateAsJSON) {
       return JSON.parse(storageStateAsJSON)
+    }
+
+    return {
+      cycles: [],
+      activeCycleId: null
     }
   })
 
@@ -62,7 +69,7 @@ export function CyclesContextProvider({ children }: CycleContextProviderProps) {
     dispatch(addNewCycleAction(newCycle))
     setSecondsPassed(0)
   }
-  
+
   const [secondsPassed, setSecondsPassed] = useState(() => {
 
     if(activeCycle) {
