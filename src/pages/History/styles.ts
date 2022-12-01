@@ -11,6 +11,13 @@ export const HistoryContainer = styled.main`
     font-size: 1.5rem;
     color: ${props => props.theme["gray-100"]};
   }
+  overflow: auto;
+
+  ::-webkit-scrollbar-thumb {
+    color: ${props => props.theme["green-500"]};
+    background-color: ${props => props.theme["green-500"]};
+    border-radius: 6px;
+  }
 `
 
 
