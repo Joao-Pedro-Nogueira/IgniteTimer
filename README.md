@@ -16,3 +16,5 @@ A aplicação possui 2 telas, sendo:
 - React Router Dom
 - React Hook Form
 - Validação de formulário com Zod
+
+Acesse o projeto através do link: https://ignite-timer-sable.vercel.app/
